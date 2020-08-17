@@ -59,8 +59,9 @@ parser.add_option("-q","--query",dest="inputseq",help="Your sequence you want to
 parser.add_option("-s","--subject",dest="subjectseq",help="a multifasta file with sequences that contains your input sequence (or not)")
 parser.add_option("-o","--output",dest="outputfile",help="output file name",default='clean.fasta')
 parser.add_option("-g","--glue",dest="glueseq",help="default:5 number of genes to search upstream on the gbks",default='')
-parser.add_option("-i","--identity",dest="identity",help="range 1-100 % of identity on sequence alignment to consider the gene/protein exists [default:85]",default=85)
-parser.add_option("-a","--alignmentLength",dest="alignL",help="range 1-100 % of aligment length to consider the gene/protein exists [default:85]",default=85)
+parser.add_option("-i","--identity",dest="identity",help="range 1-100 % of identity on sequence alignment to consider the gene/protein exists [default:85]",default=80)
+parser.add_option("-a","--alignmentLength",dest="alignL",help="range 1-100 % of aligment length to consider the gene/protein exists [default:85]",default=80)
+parser.add_option("-l","--length",dest="minLen",help="minimum length for resulting sequences after remove the query match sequence", default=0)
 
 (options,args) = parser.parse_args()
 
@@ -70,6 +71,7 @@ outputfile = options.outputfile
 glueseq = options.glueseq
 identity = int(options.identity)
 alignL = int(options.alignL)
+minLen = int(options.minLen)
 
 #######################################################################################################################
 #check variables
@@ -153,9 +155,13 @@ for fasta in fasta_sequences:
 				#call the function
 				sstart=int(uniquerow[8])-1
 				send=int(uniquerow[9])-1
-				outputFasta.write(">%s\n%s\n" % (name,str(sequence[0:sstart]+glueseq+sequence[send:len(sequence)])))
+				newseq=str(sequence[0:sstart]+glueseq+sequence[send:len(sequence)])
+				if len(newseq) >= minLen:
+					outputFasta.write(">%s\n%s\n" % (name,newseq))
+				else:
+					print("Warning: sequence",name,"was discarded because it is less than minimum length of "+str(minLen))
 			else:
-				print("Warning: sequence",name,"was discarded because it does not contain the query sequence for specified parameter of identity and coverage")
+				print("Warning: sequence",name,"was discarded because it does not contain the query sequence for specified parameter of identity or coverage")
 				
 		tmp.close()
 		os.remove("tmp.out")

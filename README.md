@@ -29,6 +29,7 @@ removeMySeq receive one sequence as input and a multiple sequences as target (mu
 * **-g** glue, string to merge the sequences after the removed ones (default: '').
 * **-i** identity, identity value for query subject that must match with subject sequences (default: 85).
 * **-a** aligment length, minimal aligment length percent for query (default: 85). 
+* **-l** minimum length, the minimum length to keep the sequence after removing the match part (default: 0)
 
 ## Output
 
