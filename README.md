@@ -21,7 +21,7 @@ removeMySeq receive one sequence as input and a multiple sequences as target (mu
 
 #### complete use
 
-`removems -q myseq.fasta -s myfasta.fasta -g aaaa -i 85 -a 85`
+`removems -q myseq.fasta -s myfasta.fasta -g aaaa -i 85 -a 85 -l 50 -v -t`
 
 * **-q** input file, must be a single sequence in fasta format.
 * **-s** subject file, a multifasta file.
@@ -30,6 +30,8 @@ removeMySeq receive one sequence as input and a multiple sequences as target (mu
 * **-i** identity, identity value for query subject that must match with subject sequences (default: 80).
 * **-a** aligment length, minimal aligment length percent for query (default: 80). 
 * **-l** minimum length, the minimum length to keep the sequence after removing the match part (default: 0).
+* **-v** inverse the match to keep the query sequence or equivalent in subject sequences (default: False).
+* **-t** translate the output sequence if they are DNA (default: False)
 
 ## Output
 

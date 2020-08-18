@@ -47,6 +47,17 @@ def callblast(blastcmd):
 	#print("- running:",command)
 	subprocess.call(command, shell=True)
 
+def translateSeq(seq):
+	if not isDNA(seq):
+		return seq
+	else:
+		surplus=len(seq) % 3
+		if surplus == 0:
+			return Seq(seq).translate()
+		else:
+			return Seq(seq[0:(len(seq)-surplus)]).translate()
+
+
 
 #######################################################################################################################
 #######################################################################################################################
@@ -59,9 +70,12 @@ parser.add_option("-q","--query",dest="inputseq",help="Your sequence you want to
 parser.add_option("-s","--subject",dest="subjectseq",help="a multifasta file with sequences that contains your input sequence (or not)")
 parser.add_option("-o","--output",dest="outputfile",help="output file name",default='clean.fasta')
 parser.add_option("-g","--glue",dest="glueseq",help="default:5 number of genes to search upstream on the gbks",default='')
-parser.add_option("-i","--identity",dest="identity",help="range 1-100 % of identity on sequence alignment to consider the gene/protein exists [default:85]",default=80)
-parser.add_option("-a","--alignmentLength",dest="alignL",help="range 1-100 % of aligment length to consider the gene/protein exists [default:85]",default=80)
+parser.add_option("-i","--identity",dest="identity",help="range 1-100 % of identity on sequence alignment to consider the gene/protein exists",default=85)
+parser.add_option("-a","--alignmentLength",dest="alignL",help="range 1-100 % of aligment length to consider the gene/protein exists",default=85)
 parser.add_option("-l","--length",dest="minLen",help="minimum length for resulting sequences after remove the query match sequence", default=0)
+parser.add_option("-v","--inverse",dest="inverse",help="inverse the match to keep the query sequence or equivalent in subject sequences", default=False, action='store_true')
+parser.add_option("-t","--translate",dest="translate",help="translate the output sequence if they are DNA", default=False, action='store_true')
+
 
 (options,args) = parser.parse_args()
 
@@ -72,6 +86,8 @@ glueseq = options.glueseq
 identity = int(options.identity)
 alignL = int(options.alignL)
 minLen = int(options.minLen)
+inverse = options.inverse
+translate = options.translate
 
 #######################################################################################################################
 #check variables
@@ -107,12 +123,13 @@ if which('tblastn') is None:
 	print("ERROR: No tblastn found, install it before continue")
 	sys.exit()
 
-fasta_sequences = SeqIO.parse(open(inputseq),'fasta')
-for fasta in fasta_sequences:
-	name, sequence = fasta.id, str(fasta.seq)
-	seqsourcetype = "DNA" if isDNA(sequence) else "AA"
-	qlength=len(sequence)
-	break
+#read query sequence
+fasta = SeqIO.read(inputseq, "fasta")
+name, sequence = fasta.id, str(fasta.seq)
+seqsourcetype = "DNA" if isDNA(sequence) else "AA"
+qlength=len(sequence)
+
+
 
 #################################################################################################
 ########## defining strategy
@@ -155,17 +172,23 @@ for fasta in fasta_sequences:
 				#call the function
 				sstart=int(uniquerow[8])-1
 				send=int(uniquerow[9])-1
-				newseq=str(sequence[0:sstart]+glueseq+sequence[send:len(sequence)])
+				if inverse:
+					newseq=str(sequence[sstart:send])
+				else:
+					newseq=str(sequence[0:sstart]+glueseq+sequence[send:len(sequence)])
+
 				if len(newseq) >= minLen:
-					outputFasta.write(">%s\n%s\n" % (name,newseq))
+					outputFasta.write(">%s\n%s\n" % (name, translateSeq(newseq) if translate else newseq))
 				else:
 					print("Warning: sequence",name,"was discarded because it is less than minimum length of "+str(minLen))
 			else:
 				print("Warning: sequence",name,"was discarded because it does not contain the query sequence for specified parameter of identity or coverage")
-				
+		
+			
 		tmp.close()
 		os.remove("tmp.out")
 		os.remove("tmp.fasta")
+
 
 	else:
 		print("Warning: No match found in subject file:",str(">"+name),"for",inputseq)
