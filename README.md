@@ -27,8 +27,8 @@ removeMySeq receive one sequence as input and a multiple sequences as target (mu
 * **-s** subject file, a multifasta file.
 * **-o** output file name (default 'clean.fasta'.
 * **-g** glue, string to merge the sequences after the removed ones (default: '').
-* **-i** identity, identity value for query subject that must match with subject sequences (default: 80).
-* **-a** aligment length, minimal aligment length percent for query (default: 80). 
+* **-i** identity, identity value for query subject that must match with subject sequences (default: 85).
+* **-a** aligment length, minimal aligment length percent for query (default: 85). 
 * **-l** minimum length, the minimum length to keep the sequence after removing the match part (default: 0).
 * **-v** inverse the match to keep the query sequence or equivalent in subject sequences (default: False).
 * **-t** translate the output sequence if they are DNA (default: False)

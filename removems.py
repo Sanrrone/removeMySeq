@@ -174,11 +174,18 @@ for fasta in fasta_sequences:
 				send=int(uniquerow[9])-1
 				if inverse:
 					newseq=str(sequence[sstart:send])
-				else:
-					newseq=str(sequence[0:sstart]+glueseq+sequence[send:len(sequence)])
 
+				else:
+					newseq = str(sequence[0:sstart]+glueseq+sequence[send:len(sequence)])
+					
+				newseq = translateSeq(newseq) if translate else newseq
 				if len(newseq) >= minLen:
-					outputFasta.write(">%s\n%s\n" % (name, translateSeq(newseq) if translate else newseq))
+					outputFasta.write(">%s\n" % (name))
+					while len(newseq) > 0:
+						outputFasta.write("%s\n" % (newseq[:70]))
+						newseq = newseq[70:]
+
+					outputFasta.write("\n")
 				else:
 					print("Warning: sequence",name,"was discarded because it is less than minimum length of "+str(minLen))
 			else:
