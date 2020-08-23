@@ -57,4 +57,4 @@ CATTATCGTTGGACTGATTGTAGTTGTGTTGGTGGTGCT
 CATTATCGTTGGACTGATTGTAGTTGTGTTGGTGGTGCT
 
 ## Notes
-the query sequence must have only one sequence, if you provide a multifasta as input only first sequence will works.
+the query sequence must have only one sequence, if you provide a multifasta as input only first sequence will work.
