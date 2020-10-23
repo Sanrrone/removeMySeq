@@ -8,6 +8,7 @@ removeMySeq receive one sequence as input and a multiple sequences as target (mu
 ## Requisites
 
 * Python >= v3.7
+* BioPython module == v1.7 (v1.8 or v1.6 doesn't work)
 * Blast+ >= 2.10.0+
 
 ## Usage
