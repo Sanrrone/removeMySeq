@@ -35,7 +35,7 @@ removeMySeq receive one sequence as input and a multiple sequences as target (mu
 
 ## Output
 
-#####query sequence
+##### query sequence
 >\>query seq
 AAAAAAAA
 
@@ -48,7 +48,7 @@ CATTATCGTTGGACTGATTGTAGTTGTGTAAAAAAAATGGTGGTGCT
 \>MH708665.1
 CATTATCGTTGGACTGATTGTAGTAAAAAAAATGTGTTGGTGGTGCT
 
-####Output
+#### Output
 >\>MH708667.1
 CATTATCGTTGGACTGATTGTAGTTGTGTTGGTGGTGCT
 \>MH708666.1
