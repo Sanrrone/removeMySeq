@@ -1,5 +1,5 @@
 # removeMySeq
-remove my sequence allow you to remove a subsequence from your sequence, it means giving a protein sequence (or nucl seq), the tool will search for the corresponding match on your fasta target and then remove the match. It will automatically recognize between DNA and AA for your searches in both sides.
+removeMySeq allow you to remove a subsequence from your sequence, it means giving a protein sequence (or nucl seq), the tool will search for the corresponding match on your fasta target and then remove the match. It will automatically recognize between DNA and AA for your searches in both sides.
 
 ## How it works
 
